@@ -21,7 +21,7 @@ public final class PulseGenerator extends JavaPlugin implements CommandExecutor,
             String name=f.getName().substring(0,f.getName().length()-4);validateName(name);
             Profile p=new Profile(y,y.getInt("world-size"));profiles.put(name,p);
         }catch(Exception e){getLogger().severe("No se pudo restaurar "+f.getName()+": "+e);getServer().getPluginManager().disablePlugin(this);return;}
-        getCommand("pulse").setExecutor(this);getCommand("pulse").setTabCompleter(this);
+        getCommand("pulsegenerator").setExecutor(this);getCommand("pulsegenerator").setTabCompleter(this);
         getServer().getPluginManager().registerEvents(new Protection(this),this);
         // Spigot 1.8 requires the primary world before additional worlds can load.
         // Keep STARTUP to provide getDefaultWorldGenerator for an optional primary HCF world.
@@ -38,7 +38,7 @@ public final class PulseGenerator extends JavaPlugin implements CommandExecutor,
     }
     @Override public void onDisable(){if(pregen!=null)pregen.saveAll();}
     @Override public ChunkGenerator getDefaultWorldGenerator(String name,String id){
-        File f=profileFile(name);if(!f.exists())throw new IllegalArgumentException("Crea el mundo con /pulse create antes de usarlo como mundo principal.");
+        File f=profileFile(name);if(!f.exists())throw new IllegalArgumentException("Crea el mundo con /pulsegenerator create antes de usarlo como mundo principal.");
         YamlConfiguration y=YamlConfiguration.loadConfiguration(f);return new HcfGenerator(new Profile(y,y.getInt("world-size")));
     }
     File profileFile(String name){validateName(name);return new File(getDataFolder(),"worlds/"+name+".yml");}
@@ -57,13 +57,13 @@ public final class PulseGenerator extends JavaPlugin implements CommandExecutor,
     }
     private World managed(String name){World w=Bukkit.getWorld(name);if(w==null||!profiles.containsKey(name))throw new IllegalArgumentException("Mundo no administrado por Pulse.");return w;}
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args){
-        if(!sender.hasPermission("pulse.admin")){sender.sendMessage(ChatColor.RED+"Sin permiso.");return true;}
+        if(!sender.hasPermission("pulsegenerator.admin")){sender.sendMessage(ChatColor.RED+"Sin permiso.");return true;}
         try{
             if(args.length==0||args[0].equalsIgnoreCase("help")){help(sender);return true;}
             String sub=args[0].toLowerCase(Locale.ROOT);
             if(sub.equals("reload")){reloadConfig();sender.sendMessage(ChatColor.GREEN+"Configuracion recargada. El terreno de mundos existentes mantiene su perfil.");return true;}
             if(sub.equals("create")){
-                if(args.length!=3&&args.length!=5)throw new IllegalArgumentException("/pulse create <mundo> <lado> [--seed <numero>]");
+                if(args.length!=3&&args.length!=5)throw new IllegalArgumentException("/pulsegenerator create <mundo> <lado> [--seed <numero>]");
                 String name=args[1];validateName(name);int size=Integer.parseInt(args[2]);
                 if(size<512||size>30000)throw new IllegalArgumentException("El lado debe estar entre 512 y 30000 bloques.");
                 File folder=new File(Bukkit.getWorldContainer(),name);
@@ -74,7 +74,7 @@ public final class PulseGenerator extends JavaPlugin implements CommandExecutor,
                 World w=new WorldCreator(name).seed(seed).generator(new HcfGenerator(p)).generateStructures(false).createWorld();setup(w,p);
                 pregen.start(w,p);sender.sendMessage(ChatColor.GREEN+"Mundo "+name+" creado: "+size+" x "+size+", seed "+seed+". Pregeneracion iniciada.");return true;
             }
-            if(args.length!=2)throw new IllegalArgumentException("/pulse "+sub+" <mundo>");
+            if(args.length!=2)throw new IllegalArgumentException("/pulsegenerator "+sub+" <mundo>");
             World w=managed(args[1]);
             if(sub.equals("status"))sender.sendMessage(ChatColor.AQUA+pregen.status(w.getName()));
             else if(sub.equals("pregen")){pregen.start(w,profiles.get(w.getName()));sender.sendMessage(ChatColor.GREEN+"Pregeneracion iniciada.");}
@@ -84,9 +84,9 @@ public final class PulseGenerator extends JavaPlugin implements CommandExecutor,
         }catch(Exception e){sender.sendMessage(ChatColor.RED+"Pulse: "+e.getMessage());getLogger().fine(e.toString());}
         return true;
     }
-    private void help(CommandSender s){s.sendMessage(ChatColor.AQUA+"Pulse Generator | Gratis | Hassxn");s.sendMessage("/pulse create <mundo> <lado> [--seed <numero>]");s.sendMessage("/pulse <pregen|pause|resume|status|tp> <mundo>");s.sendMessage("/pulse reload");}
+    private void help(CommandSender s){s.sendMessage(ChatColor.AQUA+"Pulse Generator | Gratis | Hassxn");s.sendMessage("/pulsegenerator create <mundo> <lado> [--seed <numero>]");s.sendMessage("/pulsegenerator <pregen|pause|resume|status|tp> <mundo>");s.sendMessage("/pulsegenerator reload");}
     @Override public List<String> onTabComplete(CommandSender s,Command c,String a,String[] args){
-        if(!s.hasPermission("pulse.admin"))return Collections.emptyList();
+        if(!s.hasPermission("pulsegenerator.admin"))return Collections.emptyList();
         List<String> source=args.length==1?Arrays.asList("create","pregen","pause","resume","status","tp","reload","help"):args.length==2?new ArrayList<String>(profiles.keySet()):Collections.<String>emptyList();
         List<String> out=new ArrayList<String>();for(String v:source)if(v.startsWith(args[args.length-1].toLowerCase(Locale.ROOT)))out.add(v);return out;
     }

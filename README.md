@@ -10,8 +10,8 @@ Plugin gratuito desarrollado por **Hassxn** para crear mundos de HCF en **Spigot
 4. Ejecuta desde consola o como administrador:
 
 ```text
-/pulse create hcf 3000 --seed 12345
-/pulse status hcf
+/pulsegenerator create hcf 3000 --seed 12345
+/pulsegenerator status hcf
 ```
 
 El ejemplo crea un mundo de **3000 bloques de lado**, centrado en 0,0: bloques X/Z de -1500 a 1499. No significa un radio de 3000. Se admiten lados entre 512 y 30000. Cada creación inicia automáticamente la pregeneración. El nombre no puede coincidir con una carpeta o mundo existente; el plugin no incluye comandos de borrado ni regeneración destructiva.
@@ -43,24 +43,24 @@ Los minerales personalizados son distribución, frecuencia, alturas y tamaño de
 | `jobs/<mundo>.yml` | Progreso persistido de pregeneración |
 | `reports/<mundo>.yml` | Informe final: semilla, tamaño, chunks, perfil y coordenadas de eventos |
 
-`/pulse reload` aplica parámetros operativos de pregeneración y prepara la configuración para mundos nuevos. **Los mundos existentes conservan su perfil completo**, también árboles, protección y minerales, para evitar cambios de generación en sus bordes. No edites su snapshot durante una temporada. Usa un mundo nuevo para cambiar su terreno.
+`/pulsegenerator reload` aplica parámetros operativos de pregeneración y prepara la configuración para mundos nuevos. **Los mundos existentes conservan su perfil completo**, también árboles, protección y minerales, para evitar cambios de generación en sus bordes. No edites su snapshot durante una temporada. Usa un mundo nuevo para cambiar su terreno.
 
 Las cantidades de mineral son intentos de vetas: pueden ser menores cerca de cuevas, otras vetas o límites de chunk. El perfil `vanilla` es una referencia de cantidades; no reproduce el generador vanilla de Minecraft.
 
 ## Comandos y permisos
 
 ```text
-/pulse help
-/pulse create <mundo> <lado> [--seed <numero>]
-/pulse pregen <mundo>
-/pulse pause <mundo>
-/pulse resume <mundo>
-/pulse status <mundo>
-/pulse tp <mundo>
-/pulse reload
+/pulsegenerator help
+/pulsegenerator create <mundo> <lado> [--seed <numero>]
+/pulsegenerator pregen <mundo>
+/pulsegenerator pause <mundo>
+/pulsegenerator resume <mundo>
+/pulsegenerator status <mundo>
+/pulsegenerator tp <mundo>
+/pulsegenerator reload
 ```
 
-Permiso: `pulse.admin`, por defecto para operadores. `pregen` inicia una tarea si no existe; una tarea pausada se continúa con `resume`. Una tarea completada no se vuelve a ejecutar.
+Permiso: `pulsegenerator.admin`, por defecto para operadores. `pregen` inicia una tarea si no existe; una tarea pausada se continúa con `resume`. Una tarea completada no se vuelve a ejecutar.
 
 ## Pregeneración y reinicios
 

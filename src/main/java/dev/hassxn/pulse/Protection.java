@@ -15,10 +15,10 @@ final class Protection implements Listener {
     Protection(PulseGenerator plugin){this.plugin=plugin;}
     private Profile profile(Block b){return plugin.profiles.get(b.getWorld().getName());}
     private boolean protectedBlock(Block b){Profile p=profile(b);return p!=null&&p.yaml.getBoolean("spawn.protect",true)&&p.spawn(b.getX(),b.getZ());}
-    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void breakBlock(BlockBreakEvent e){if(protectedBlock(e.getBlock())&&!e.getPlayer().hasPermission("pulse.admin"))e.setCancelled(true);}
-    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void place(BlockPlaceEvent e){if(protectedBlock(e.getBlock())&&!e.getPlayer().hasPermission("pulse.admin"))e.setCancelled(true);}
-    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void bucket(PlayerBucketEmptyEvent e){if(protectedBlock(e.getBlockClicked().getRelative(e.getBlockFace()))&&!e.getPlayer().hasPermission("pulse.admin"))e.setCancelled(true);}
-    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void bucket(PlayerBucketFillEvent e){if(protectedBlock(e.getBlockClicked())&&!e.getPlayer().hasPermission("pulse.admin"))e.setCancelled(true);}
+    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void breakBlock(BlockBreakEvent e){if(protectedBlock(e.getBlock())&&!e.getPlayer().hasPermission("pulsegenerator.admin"))e.setCancelled(true);}
+    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void place(BlockPlaceEvent e){if(protectedBlock(e.getBlock())&&!e.getPlayer().hasPermission("pulsegenerator.admin"))e.setCancelled(true);}
+    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void bucket(PlayerBucketEmptyEvent e){if(protectedBlock(e.getBlockClicked().getRelative(e.getBlockFace()))&&!e.getPlayer().hasPermission("pulsegenerator.admin"))e.setCancelled(true);}
+    @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void bucket(PlayerBucketFillEvent e){if(protectedBlock(e.getBlockClicked())&&!e.getPlayer().hasPermission("pulsegenerator.admin"))e.setCancelled(true);}
     @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void explosion(EntityExplodeEvent e){e.blockList().removeIf(this::protectedBlock);}
     @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void explosion(BlockExplodeEvent e){e.blockList().removeIf(this::protectedBlock);}
     @EventHandler(priority=EventPriority.HIGH,ignoreCancelled=true) public void flow(BlockFromToEvent e){if(protectedBlock(e.getToBlock()))e.setCancelled(true);}
