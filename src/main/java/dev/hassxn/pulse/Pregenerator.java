@@ -11,9 +11,10 @@ final class Pregenerator implements Runnable {
     private final PulseGenerator plugin;
     private final LegacyLighting lighting=new LegacyLighting();
     private final Map<String,Job> jobs=new LinkedHashMap<String,Job>();
-    private long last=System.nanoTime(),checkpoint=System.currentTimeMillis();
+    private final TpsMonitor monitor;
+    private long lastRun,checkpoint=System.currentTimeMillis();
     private double tps=20;
-    Pregenerator(PulseGenerator plugin){this.plugin=plugin;}
+    Pregenerator(PulseGenerator plugin){this.plugin=plugin;monitor=new TpsMonitor(plugin.getServer(),System.nanoTime());}
     void restore(World w,Profile p) throws IOException {
         File file=file(w.getName()); if(!file.exists())return;
         YamlConfiguration y=YamlConfiguration.loadConfiguration(file);
@@ -27,11 +28,17 @@ final class Pregenerator implements Runnable {
         Job j=new Job(w,p,plugin.getConfig().getInt("pregeneration.halo-chunks",2));jobs.put(w.getName(),j);save(j);
     }
     void pause(String name,boolean paused)throws IOException{Job j=job(name);if(j.cursor==j.total)throw new IllegalArgumentException("Pregeneracion ya completada.");j.paused=paused;save(j);}
-    String status(String name){Job j=job(name);return String.format(Locale.ROOT,"%s: %.2f%% (%d/%d chunks), %s, TPS estimados %.1f",name,100.0*j.cursor/j.total,j.cursor,j.total,j.cursor==j.total?"completado":j.paused?"pausado":"activo",tps);}
+    String status(String name){
+        Job j=job(name);double current=monitor.current();
+        String state=j.cursor==j.total?"completado":j.paused?"pausado":lastRun==0?"iniciando":
+            System.nanoTime()-lastRun>5000000000L?"tarea sin actividad":
+            current<plugin.getConfig().getDouble("pregeneration.minimum-tps",17)?"esperando recuperacion de TPS":"activo";
+        return String.format(Locale.ROOT,"%s: %.2f%% (%d/%d chunks), %s, TPS %s %.1f",name,100.0*j.cursor/j.total,j.cursor,j.total,state,monitor.isNative()?"del servidor":"estimados",current);
+    }
     private Job job(String name){Job j=jobs.get(name);if(j==null)throw new IllegalArgumentException("Sin tarea para ese mundo.");return j;}
     private File file(String name){return new File(plugin.getDataFolder(),"jobs/"+name+".yml");}
     @Override public void run(){
-        long now=System.nanoTime();double tick=(now-last)/1e6;last=now;tps=.95*tps+.05*Math.min(20,1000/Math.max(1,tick));
+        long now=System.nanoTime();lastRun=now;tps=monitor.tick(now);
         long end=now+Profile.bounded(plugin.getConfig().getInt("pregeneration.budget-ms",20),1,50)*1000000L;
         int remaining=Profile.bounded(plugin.getConfig().getInt("pregeneration.chunks-per-tick",1),1,16);
         if(tps>=plugin.getConfig().getDouble("pregeneration.minimum-tps",17))for(Job j:jobs.values()){

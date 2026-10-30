@@ -30,6 +30,7 @@ pregeneration:
   # El presupuesto es flexible: no se puede interrumpir la generacion de un chunk.
   chunks-per-tick: 1
   budget-ms: 20
+  # Usa TPS nativos del servidor cuando estan disponibles; 0 desactiva la espera.
   minimum-tps: 17.0
   checkpoint-seconds: 15
   auto-resume: true
