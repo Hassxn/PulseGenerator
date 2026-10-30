@@ -1,0 +1,11 @@
+# Minas naturales: cuevas serpenteantes, sin cubos prison, reset ni bloques artificiales.
+caves:
+  enabled: true
+  cell-size: 96
+  chance: 0.65
+  min-y: 12
+  max-y: 44
+  radius: 2.6
+  length: 90
+  # Intentos extra cerca de las paredes, ademas del perfil general de ores.yml.
+  ore-boost: 1.65

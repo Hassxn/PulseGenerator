@@ -1,0 +1,16 @@
+# vanilla, hcf o custom. Los multiplicadores afectan intentos de vetas.
+profile: hcf
+profiles:
+  vanilla: 1.0
+  hcf: 1.65
+  custom: 2.0
+# chance por intento. Vetas solo sustituyen piedra, nunca el spawn reservado.
+ores:
+  COAL_ORE: {min-y: 5, max-y: 100, attempts: 20, vein-size: 14, chance: 1.0}
+  IRON_ORE: {min-y: 5, max-y: 63, attempts: 20, vein-size: 8, chance: 1.0}
+  GOLD_ORE: {min-y: 5, max-y: 32, attempts: 3, vein-size: 7, chance: 1.0}
+  REDSTONE_ORE: {min-y: 4, max-y: 16, attempts: 8, vein-size: 7, chance: 1.0}
+  LAPIS_ORE: {min-y: 8, max-y: 30, attempts: 2, vein-size: 6, chance: 1.0}
+  DIAMOND_ORE: {min-y: 5, max-y: 16, attempts: 2, vein-size: 6, chance: 0.8}
+  EMERALD_ORE: {min-y: 5, max-y: 28, attempts: 1, vein-size: 2, chance: 0.5}
+# Drops/XP conservan comportamiento vanilla (Fortune y Silk Touch incluidos).

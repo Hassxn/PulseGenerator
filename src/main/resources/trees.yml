@@ -1,0 +1,9 @@
+enabled: true
+# Una posicion por celda, copas separadas; mezcla de roble compacto, abedul y roble seco.
+spacing: 13
+chance: 0.42
+oak-weight: 65
+birch-weight: 25
+dry-weight: 10
+# Caida extra al desaparecer hojas de roble; las hojas permiten decay natural.
+apple-chance: 0.01

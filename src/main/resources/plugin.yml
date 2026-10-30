@@ -1,0 +1,14 @@
+name: PulseGenerator
+main: dev.hassxn.pulse.PulseGenerator
+version: 1.0.0
+author: Hassxn
+description: Generador gratuito de mundos HCF con cuevas naturales enriquecidas.
+load: STARTUP
+commands:
+  pulse:
+    description: Administrar Pulse Generator
+    usage: /pulse help
+    permission: pulse.admin
+permissions:
+  pulse.admin:
+    default: op

@@ -1,0 +1,37 @@
+# Pulse Generator - gratis, desarrollado por Hassxn.
+# Cambios de terreno SOLO se aplican a mundos nuevos: cada mundo guarda su perfil.
+terrain:
+  base-height: 68
+  hill-amplitude: 9
+  scale: 180
+spawn:
+  size: 160
+  transition: 48
+  protect: true
+roads:
+  enabled: true
+  width: 12
+  transition: 16
+  material: GRAVEL
+events:
+  enabled: true
+  size: 64
+  transition: 24
+  centers:
+    - '700,700'
+    - '-700,-700'
+    - '700,-700'
+    - '-700,700'
+resources:
+  ponds-chance: 0.025
+  sugar-cane: true
+  animals-chance: 0.025
+pregeneration:
+  # El presupuesto es flexible: no se puede interrumpir la generacion de un chunk.
+  chunks-per-tick: 1
+  budget-ms: 20
+  minimum-tps: 17.0
+  checkpoint-seconds: 15
+  auto-resume: true
+  # Incluye un halo fuera del borde para terminar poblacion/iluminacion de los bordes.
+  halo-chunks: 2
