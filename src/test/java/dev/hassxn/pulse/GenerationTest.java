@@ -1,3 +1,24 @@
+/*
+ * PulseGenerator - HCF world generator / Generador de mundos HCF
+ * Copyright (C) 2026 Hassxn
+ * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * EN: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License, version 3,
+ * as published by the Free Software Foundation.
+ * This program is distributed WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the LICENSE file for the full terms.
+ *
+ * ES: Este programa es software libre: puede redistribuirlo y/o modificarlo
+ * bajo los terminos de la Licencia Publica General de GNU, version 3,
+ * publicada por la Free Software Foundation.
+ * Se distribuye SIN NINGUNA GARANTIA; ni siquiera la garantia implicita de
+ * COMERCIABILIDAD o IDONEIDAD PARA UN PROPOSITO PARTICULAR.
+ * Consulte LICENSE para los terminos completos y LICENCIA.md para la
+ * explicacion en espanol.
+ */
+
 package dev.hassxn.pulse;
 
 import org.bukkit.Material;
